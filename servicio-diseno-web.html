@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diseño web básico — Servicios Base — OminiX</title>
+<meta name="description" content="OminiX es una agencia de marketing que combina servicios de marca tradicionales con MetaX: contenido generado con IA, identidades virtuales, activaciones phygitales, experiencias interactivas e IA aplicada a negocio.">
+
+<!-- ============================================================
+     FUENTES
+     Plus Jakarta Sans para títulos, Montserrat para texto de cuerpo.
+     Ambas cargadas en pesos regular/medium — nunca bold.
+============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. TOKENS — variables de marca OminiX
+============================================================ */
+:root{
+  --white:#ffffff;
+  --mist:#F5F9FA;           /* fondo alterno muy claro */
+  --line:#E3ECEE;           /* bordes sutiles */
+  --ink:#0B1516;            /* texto negro cálido */
+  --ink-soft:#4B5B5D;       /* texto secundario */
+  --turquesa:#018DA6;       /* principal */
+  --verde-azulado:#01A4A6;  /* secundario */
+  --turquesa-deep:#016B80;  /* hover / contraste */
+  --navy:#012B30;           /* footer / fondos oscuros */
+  --radius-s:12px;
+  --radius-m:20px;
+  --radius-l:32px;
+  --shadow-soft:0 20px 60px -25px rgba(1,74,89,0.25);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Montserrat', sans-serif;
+  font-weight:400;
+  color:var(--ink);
+  background:var(--white);
+  line-height:1.7;
+  letter-spacing:0.015em;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+p, span, a, li, label, input, textarea, select, button{
+  letter-spacing:0.015em;
+}
+h1,h2,h3,h4,.brand-word{
+  font-family:'Plus Jakarta Sans', sans-serif;
+  font-weight:500;
+  letter-spacing:0em;
+  line-height:1.15;
+}
+b,strong{font-weight:500;} /* nunca negrita real, solo medium para énfasis */
+a{color:inherit; text-decoration:none;}
+ul{list-style:none;}
+img{max-width:100%; display:block;}
+button{font-family:inherit; cursor:pointer; border:none; background:none;}
+input,textarea,select{font-family:'Montserrat', sans-serif; font-weight:400;}
+
+.container{
+  width:100%;
+  max-width:1240px;
+  margin:0 auto;
+  padding:0 32px;
+}
+section{position:relative;}
+.section-pad{padding:140px 0;}
+@media (max-width:900px){ .section-pad{padding:96px 0;} }
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--turquesa);
+  font-weight:500;
+  margin-bottom:20px;
+}
+.eyebrow::before{
+  content:"";
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--verde-azulado);
+}
+
+.mist-bg{background:var(--mist);}
+
+/* botones */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:16px 30px;
+  border-radius:100px;
+  font-size:15px;
+  font-weight:500;
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), background .3s var(--ease);
+  white-space:nowrap;
+}
+.btn-primary{
+  background:linear-gradient(135deg, var(--turquesa), var(--verde-azulado));
+  color:#fff;
+  box-shadow:0 12px 30px -12px rgba(1,141,166,0.55);
+}
+.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 18px 40px -14px rgba(1,141,166,0.6); }
+.btn-ghost{
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+.btn-ghost:hover{ border-color:var(--turquesa); color:var(--turquesa); transform:translateY(-2px); }
+
+/* ============================================================
+   2. NAV — sticky, con blur y estado activo al hacer scroll
+============================================================ */
+header{
+  position:fixed; top:0; left:0; width:100%;
+  z-index:1000;
+  padding:20px 0;
+  transition:padding .4s var(--ease), background .4s var(--ease), box-shadow .4s var(--ease);
+}
+header.scrolled{
+  padding:12px 0;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 8px 30px -20px rgba(1,74,89,0.35);
+}
+nav{
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Plus Jakarta Sans', sans-serif;
+  font-size:20px; font-weight:600;
+  letter-spacing:-0.01em;
+}
+.logo-mark{
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(135deg, var(--turquesa), var(--verde-azulado));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:15px; font-weight:600;
+  box-shadow:0 8px 18px -8px rgba(1,141,166,0.6);
+}
+.nav-links{
+  display:flex; align-items:center; gap:36px;
+}
+.nav-links a{
+  font-size:14.5px; color:var(--ink-soft);
+  position:relative;
+  transition:color .3s var(--ease);
+}
+.nav-links a::after{
+  content:""; position:absolute; left:0; bottom:-6px;
+  width:0; height:1.5px; background:var(--turquesa);
+  transition:width .35s var(--ease);
+}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a:hover::after{width:100%;}
+.nav-right{display:flex; align-items:center; gap:18px;}
+
+/* --- mega menu: Servicios --- */
+.has-mega{ position:relative; }
+.mega-trigger{
+  display:flex; align-items:center; gap:6px;
+  font-size:14.5px; color:var(--ink-soft);
+  background:none; border:none; cursor:pointer;
+  font-family:inherit; letter-spacing:0.015em;
+  transition:color .3s var(--ease);
+}
+.mega-trigger svg{ width:12px; height:12px; stroke:currentColor; transition:transform .35s var(--ease); }
+.has-mega.mega-open .mega-trigger{ color:var(--ink); }
+.has-mega.mega-open .mega-trigger svg{ transform:rotate(180deg); }
+
+/* zona-puente invisible que cubre el hueco entre el botón y el panel,
+   así el ratón nunca "sale" del componente al bajar en diagonal */
+.mega-panel::before{
+  content:""; position:absolute; left:0; right:0; top:-22px; height:22px;
+}
+.mega-panel{
+  position:absolute; top:calc(100% + 22px); left:50%;
+  transform:translateX(-50%) translateY(10px);
+  width:min(600px, 82vw);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius-m);
+  box-shadow:var(--shadow-soft);
+  padding:18px;
+  display:grid; grid-template-columns:1fr 1fr; gap:8px 18px;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity .35s var(--ease), transform .35s var(--ease), visibility .35s;
+  z-index:1100;
+}
+.has-mega.mega-open .mega-panel{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.mega-col{ padding:10px; }
+.mega-col-title{
+  font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--turquesa); font-weight:500; margin-bottom:14px;
+  font-family:'Plus Jakarta Sans', sans-serif;
+}
+.mega-item{
+  display:flex; align-items:center; gap:11px;
+  padding:9px 10px; border-radius:10px;
+  font-size:14px; color:var(--ink);
+  transition:background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.mega-item:hover{ background:var(--mist); color:var(--turquesa); transform:translateX(3px); }
+
+/* columna MetaX: tarjeta con degradado de marca */
+.mega-col-metax{
+  background:linear-gradient(155deg, var(--turquesa), var(--verde-azulado));
+  border-radius:16px;
+  box-shadow:0 16px 34px -18px rgba(1,141,166,0.55);
+}
+.mega-col-metax .mega-col-title{ color:rgba(255,255,255,0.85); }
+.mega-col-metax .mega-item{ color:#fff; }
+.mega-col-metax .mega-item:hover{ background:rgba(255,255,255,0.16); color:#fff; }
+
+@media (max-width:960px){
+  .mega-panel::before{ display:none; }
+  .mega-panel{
+    position:static; transform:none; width:100%; box-shadow:none;
+    border:none; border-radius:0; grid-template-columns:1fr;
+    padding:4px 0 4px 14px; gap:16px;
+    max-height:0; overflow:hidden; opacity:1; visibility:visible;
+    transition:max-height .45s var(--ease);
+  }
+  .has-mega.mega-open .mega-panel{ max-height:900px; }
+  .mega-col{ padding:6px; }
+  .mega-col-metax{ padding:14px 10px; }
+  .mega-trigger{ font-size:19px; color:var(--ink); width:100%; justify-content:space-between; }
+}
+
+.lang-toggle{
+  display:flex; align-items:center; gap:2px;
+  border:1px solid var(--line); border-radius:100px; padding:4px;
+  font-size:12.5px; font-weight:500;
+}
+.lang-toggle button{
+  padding:6px 12px; border-radius:100px; color:var(--ink-soft);
+  transition:all .3s var(--ease);
+}
+.lang-toggle button.active{ background:var(--ink); color:#fff; }
+
+.burger{
+  display:none; flex-direction:column; gap:5px; width:26px;
+}
+.burger span{ width:100%; height:1.5px; background:var(--ink); transition:all .35s var(--ease); }
+
+@media (max-width:960px){
+  .nav-links{
+    position:fixed; top:0; right:0; height:100vh; width:min(78vw,340px);
+    background:#fff; flex-direction:column; align-items:flex-start;
+    padding:110px 36px 40px; gap:26px;
+    transform:translateX(100%); transition:transform .5s var(--ease);
+    box-shadow:-20px 0 60px -30px rgba(0,0,0,0.3);
+  }
+  .nav-links.open{ transform:translateX(0); }
+  .nav-links a{ font-size:19px; color:var(--ink); }
+  .burger{ display:flex; z-index:1200; }
+  .burger.open span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+  .burger.open span:nth-child(2){ opacity:0; }
+  .burger.open span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+  .nav-cta-desktop{ display:none; }
+}
+
+/* ============================================================
+   3. HERO
+============================================================ */
+.hero{
+  min-height:100vh;
+  display:flex; align-items:center;
+  padding-top:140px; padding-bottom:80px;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(60% 55% at 82% 8%, rgba(1,164,166,0.16), transparent 60%),
+    radial-gradient(50% 50% at 12% 92%, rgba(1,141,166,0.14), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #F8FBFC 100%);
+}
+.hero-grid{
+  display:grid; grid-template-columns:1.05fr 0.85fr; gap:60px; align-items:center;
+}
+.hero h1{
+  font-size:clamp(38px, 5.2vw, 68px);
+  color:var(--ink);
+  margin-bottom:26px;
+}
+.hero h1 .accent{
+  background:linear-gradient(120deg, var(--turquesa), var(--verde-azulado));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero p.lead{
+  font-size:18px; color:var(--ink-soft); max-width:520px; margin-bottom:38px;
+  font-weight:300;
+}
+.hero-actions{ display:flex; gap:16px; flex-wrap:wrap; margin-bottom:56px; }
+.hero-stats{ display:flex; gap:44px; flex-wrap:wrap; }
+.stat b{ display:block; font-family:'Plus Jakarta Sans'; font-size:26px; font-weight:600; color:var(--turquesa); }
+.stat span{ font-size:13px; color:var(--ink-soft); }
+
+.hero-visual{
+  position:relative; height:520px;
+}
+.orb{
+  position:absolute; border-radius:var(--radius-l);
+  background:linear-gradient(155deg, var(--turquesa), var(--verde-azulado));
+}
+.orb-1{ width:78%; height:78%; top:0; right:0; opacity:.95; animation:float1 8s ease-in-out infinite; box-shadow:0 40px 80px -25px rgba(1,74,89,0.55), 0 15px 35px -15px rgba(1,141,166,0.4);}
+.orb-2{ width:46%; height:46%; top:-8%; right:-8%; background:linear-gradient(155deg,#ffffff,#EAF6F7); border:1px solid var(--line); animation:float2 7s ease-in-out infinite; box-shadow:0 25px 55px -20px rgba(1,74,89,0.28); z-index:1; }
+.orb-card{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:28px; color:#fff;
+  text-decoration:none; cursor:pointer;
+}
+.orb-card > *{ transition:opacity .4s ease; }
+.orb-card.fading > *{ opacity:0; }
+.orb-card .tag{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; opacity:.85; }
+.orb-card .big{ font-family:'Plus Jakarta Sans'; font-size:22px; font-weight:500; }
+@keyframes float1{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-14px);} }
+@keyframes float2{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(12px);} }
+
+@media (max-width:960px){
+  .hero-grid{ grid-template-columns:1fr; }
+  .hero-visual{ height:320px; order:-1; }
+}
+
+/* reveal on scroll — aparición progresiva del contenido al bajar (estilo Framer) */
+.reveal{
+  opacity:0; transform:translateY(64px) scale(.94); filter:blur(9px);
+  transition:opacity 1.1s var(--ease), transform 1.1s var(--ease), filter 1.1s var(--ease);
+  will-change:opacity, transform, filter;
+}
+.reveal.in{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+.reveal-stagger > *{
+  opacity:0; transform:translateY(52px) scale(.96); filter:blur(6px);
+  transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease);
+  will-change:opacity, transform, filter;
+}
+.reveal-stagger.in > *{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+.reveal-stagger.in > *:nth-child(1){transition-delay:.06s;}
+.reveal-stagger.in > *:nth-child(2){transition-delay:.14s;}
+.reveal-stagger.in > *:nth-child(3){transition-delay:.22s;}
+.reveal-stagger.in > *:nth-child(4){transition-delay:.30s;}
+.reveal-stagger.in > *:nth-child(5){transition-delay:.38s;}
+.reveal-stagger.in > *:nth-child(6){transition-delay:.46s;}
+.reveal-stagger.in > *:nth-child(7){transition-delay:.54s;}
+.reveal-stagger.in > *:nth-child(8){transition-delay:.62s;}
+
+/* ============================================================
+   4. SECTION HEADERS
+============================================================ */
+.head-block{ max-width:640px; margin-bottom:64px; }
+.head-block h2{ font-size:clamp(28px,3.4vw,42px); margin-bottom:18px; }
+.head-block p{ color:var(--ink-soft); font-size:16.5px; font-weight:300; }
+.head-block.center{ margin-left:auto; margin-right:auto; text-align:center; }
+
+/* ============================================================
+   5. SERVICIOS BASE
+============================================================ */
+.base-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+}
+.base-card{
+  position:relative;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius-m);
+  padding:32px 26px;
+  overflow:hidden;
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+.base-card::before{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, var(--turquesa) 0%, var(--verde-azulado) 100%);
+  opacity:0;
+  transition:opacity .5s var(--ease);
+  z-index:0;
+}
+.base-card > *{ position:relative; z-index:1; transition:color .4s var(--ease), border-color .4s var(--ease), background .4s var(--ease); }
+.base-card:hover{ transform:translateY(-8px); box-shadow:var(--shadow-soft); border-color:transparent; }
+.base-card:hover::before{ opacity:1; }
+.base-card:hover h4{ color:#fff; }
+.base-card:hover p{ color:rgba(255,255,255,0.85); }
+.base-card:hover .icon-box{ background:rgba(255,255,255,0.18); box-shadow:none; }
+.base-card:hover .icon-box svg{ stroke:#fff; }
+.icon-box{
+  width:46px; height:46px; border-radius:var(--radius-s);
+  background:linear-gradient(135deg, rgba(1,141,166,0.12), rgba(1,164,166,0.16));
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:22px;
+  box-shadow:0 10px 24px -14px rgba(1,141,166,0.5);
+  transition:background .4s var(--ease), box-shadow .4s var(--ease);
+}
+.icon-box svg{ width:22px; height:22px; stroke:var(--turquesa); transition:stroke .4s var(--ease); }
+.base-card h4{ font-size:17px; margin-bottom:10px; }
+.base-card p{ font-size:14.5px; color:var(--ink-soft); font-weight:300; }
+
+@media (max-width:960px){ .base-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .base-grid{ grid-template-columns:1fr;} }
+
+/* ============================================================
+   6. METAX
+============================================================ */
+.metax-section{
+  background:var(--navy);
+  color:#fff;
+  border-radius:var(--radius-l);
+  margin:0 24px;
+  padding:110px 6% ;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 50px 100px -40px rgba(1,43,48,0.6);
+}
+.metax-section::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(45% 40% at 90% 0%, rgba(1,164,166,0.35), transparent 60%),
+    radial-gradient(40% 40% at 0% 100%, rgba(1,141,166,0.3), transparent 60%);
+  pointer-events:none;
+}
+.metax-section .head-block p{ color:rgba(255,255,255,0.68); }
+.metax-section .head-block h2{ color:#fff; }
+.metax-section .eyebrow{ color:var(--verde-azulado); }
+
+.fase0{
+  position:relative; z-index:1;
+  display:flex; align-items:center; gap:28px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:var(--radius-m);
+  padding:30px 34px;
+  margin-bottom:56px;
+  backdrop-filter:blur(6px);
+}
+.fase0-num{
+  font-family:'Plus Jakarta Sans'; font-size:15px; font-weight:600;
+  width:56px; height:56px; min-width:56px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--turquesa), var(--verde-azulado));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 14px 30px -12px rgba(1,164,166,0.6);
+}
+.fase0 h4{ font-size:18px; margin-bottom:6px; }
+.fase0 p{ font-size:14.5px; color:rgba(255,255,255,0.68); font-weight:300; }
+
+.lineas-grid{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:22px;
+}
+.linea-card{
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--radius-m);
+  padding:32px 28px;
+  transition:transform .5s var(--ease), background .5s var(--ease), border-color .5s var(--ease);
+}
+.linea-card:hover{
+  transform:translateY(-8px);
+  background:rgba(255,255,255,0.09);
+  border-color:rgba(1,164,166,0.5);
+}
+.linea-index{ font-size:13px; color:var(--verde-azulado); letter-spacing:.06em; margin-bottom:18px; display:block;}
+.linea-card h4{ font-size:19px; margin-bottom:12px; color:#fff; display:flex; align-items:center; gap:9px; }
+.linea-dot{
+  width:6px; height:6px; border-radius:50%; flex:none;
+  background:var(--verde-azulado);
+  animation:dotPulse 1.8s ease-out infinite;
+}
+@keyframes dotPulse{
+  0%{ transform:scale(1); box-shadow:0 0 0 0 rgba(1,164,166,0.65); }
+  60%{ transform:scale(1.35); box-shadow:0 0 0 9px rgba(1,164,166,0); }
+  100%{ transform:scale(1); box-shadow:0 0 0 0 rgba(1,164,166,0); }
+}
+.linea-card p{ font-size:14.5px; color:rgba(255,255,255,0.66); font-weight:300; margin-bottom:18px; }
+.linea-tag{
+  display:inline-block; font-size:12px; padding:5px 12px; border-radius:100px;
+  border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.75);
+}
+
+@media (max-width:960px){ .lineas-grid{ grid-template-columns:1fr 1fr;} .metax-section{margin:0 14px; padding:80px 6%;} }
+@media (max-width:640px){ .lineas-grid{ grid-template-columns:1fr;} .fase0{flex-direction:column; text-align:center;} }
+
+/* ============================================================
+   7. PROYECTOS
+============================================================ */
+.proj-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+.proj-card{
+  border-radius:var(--radius-m);
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:0 20px 45px -30px rgba(1,74,89,0.3);
+  transition:transform .55s var(--ease), box-shadow .55s var(--ease);
+}
+.proj-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-soft); }
+.proj-thumb{
+  height:260px;
+  background:linear-gradient(150deg, var(--turquesa), var(--verde-azulado));
+  border-radius:var(--radius-m) var(--radius-m) 0 0;
+  position:relative; overflow:hidden;
+  display:flex; align-items:flex-end; padding:22px;
+  box-shadow:inset 0 -40px 60px -30px rgba(1,43,48,0.4);
+}
+.proj-thumb::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(1,43,48,0.5), transparent 55%);
+}
+.proj-thumb span{
+  position:relative; z-index:1; color:#fff; font-size:12.5px;
+  letter-spacing:.06em; text-transform:uppercase; opacity:.9;
+}
+.proj-info{ padding:22px 24px 26px; background:#fff; }
+.proj-info h4{ font-size:16.5px; margin-bottom:6px; }
+.proj-info p{ font-size:13.5px; color:var(--ink-soft); font-weight:300; }
+
+@media (max-width:960px){ .proj-grid{ grid-template-columns:1fr 1fr;} }
+@media (max-width:640px){ .proj-grid{ grid-template-columns:1fr;} }
+
+/* ============================================================
+   8. BLOG
+============================================================ */
+.blog-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:26px;
+}
+.blog-card{
+  border-radius:var(--radius-m);
+  overflow:hidden; background:var(--mist);
+  box-shadow:0 20px 45px -32px rgba(1,74,89,0.3);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.blog-card:hover{ box-shadow:var(--shadow-soft); }
+.blog-card:hover{ transform:translateY(-6px); }
+.blog-thumb{
+  height:190px;
+  background:linear-gradient(135deg, rgba(1,141,166,0.85), rgba(1,164,166,0.7));
+  border-radius:var(--radius-m) var(--radius-m) 0 0;
+  box-shadow:inset 0 -30px 50px -25px rgba(1,43,48,0.35);
+}
+.blog-body{ padding:26px 26px 30px; }
+.blog-meta{ font-size:12.5px; color:var(--turquesa); margin-bottom:12px; letter-spacing:.03em; }
+.blog-card h4{ font-size:17.5px; margin-bottom:10px; }
+.blog-card p{ font-size:14px; color:var(--ink-soft); font-weight:300; margin-bottom:18px; }
+.blog-link{ font-size:13.5px; color:var(--ink); display:inline-flex; align-items:center; gap:6px; }
+.blog-link svg{ width:13px; height:13px; transition:transform .3s var(--ease); }
+.blog-card:hover .blog-link svg{ transform:translateX(4px); }
+
+@media (max-width:960px){ .blog-grid{ grid-template-columns:1fr 1fr;} }
+@media (max-width:640px){ .blog-grid{ grid-template-columns:1fr;} }
+
+/* ============================================================
+   9. CONTACTO
+============================================================ */
+.contact-wrap{
+  display:grid; grid-template-columns:0.85fr 1.15fr; gap:60px;
+  background:linear-gradient(135deg, var(--turquesa) 0%, var(--verde-azulado) 100%);
+  border-radius:var(--radius-l);
+  padding:64px;
+  box-shadow:0 40px 90px -35px rgba(1,74,89,0.5);
+  position:relative;
+  overflow:hidden;
+}
+.contact-wrap::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(50% 60% at 100% 0%, rgba(255,255,255,0.16), transparent 60%),
+    radial-gradient(45% 50% at 0% 100%, rgba(1,43,48,0.18), transparent 60%);
+  pointer-events:none;
+}
+.contact-wrap > *{ position:relative; z-index:1; }
+.contact-info h2{ font-size:clamp(26px,3vw,36px); margin-bottom:20px; color:#fff; }
+.contact-info p{ color:rgba(255,255,255,0.82); font-weight:300; margin-bottom:36px; font-size:15.5px; }
+.contact-info .eyebrow{ color:#fff; }
+.contact-info .eyebrow::before{ background:#fff; }
+.contact-channel span{ color:#fff; }
+.social-btn{ background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.35); }
+.social-btn svg{ stroke:#fff; }
+.social-btn:hover{ background:#fff; border-color:#fff; }
+.social-btn:hover svg{ stroke:var(--turquesa); }
+.contact-channel .icon-box{ background:rgba(255,255,255,0.16); }
+.contact-channel .icon-box svg{ stroke:#fff !important; }
+form{
+  background:#fff; border-radius:var(--radius-m); padding:36px;
+  box-shadow:0 30px 70px -30px rgba(1,43,48,0.45);
+}
+.contact-channel{
+  display:flex; align-items:center; gap:14px; margin-bottom:18px;
+}
+.contact-channel .icon-box{ margin-bottom:0; width:40px; height:40px; }
+.contact-channel .icon-box svg{ width:18px; height:18px; }
+.contact-channel span{ font-size:14.5px; }
+.social-row{ display:flex; gap:12px; margin-top:34px; }
+.social-btn{
+  width:44px; height:44px; border-radius:50%;
+  background:#fff; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center;
+  transition:all .35s var(--ease);
+}
+.social-btn:hover{ background:var(--turquesa); border-color:var(--turquesa); transform:translateY(-3px); }
+.social-btn:hover svg{ stroke:#fff; }
+.social-btn svg{ width:18px; height:18px; stroke:var(--turquesa); transition:stroke .3s var(--ease); }
+
+form{ display:flex; flex-direction:column; gap:18px; }
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.field label{ display:block; font-size:12.5px; color:var(--ink-soft); margin-bottom:8px; letter-spacing:.02em; }
+.field input, .field select, .field textarea{
+  width:100%; padding:15px 18px; border-radius:var(--radius-s);
+  border:1px solid var(--line); background:#fff; font-size:14.5px; color:var(--ink);
+  transition:border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none; border-color:var(--turquesa); box-shadow:0 0 0 4px rgba(1,141,166,0.12);
+}
+.field textarea{ resize:vertical; min-height:120px; }
+.form-note{ font-size:12.5px; color:var(--ink-soft); margin-top:-4px; }
+
+@media (max-width:900px){
+  .contact-wrap{ grid-template-columns:1fr; padding:40px 28px; border-radius:var(--radius-m); }
+  .form-row{ grid-template-columns:1fr; }
+}
+
+/* ============================================================
+   10. FOOTER
+============================================================ */
+footer{
+  background:var(--navy); color:rgba(255,255,255,0.7);
+  padding:80px 0 32px; margin-top:60px;
+}
+.footer-grid{
+  display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:40px;
+  padding-bottom:56px; border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.footer-grid h5{ color:#fff; font-family:'Plus Jakarta Sans'; font-weight:500; font-size:14.5px; margin-bottom:20px; letter-spacing:.02em; }
+.footer-grid ul li{ margin-bottom:12px; font-size:14px; }
+.footer-grid ul li a{ transition:color .3s var(--ease); }
+.footer-grid ul li a:hover{ color:var(--verde-azulado); }
+.footer-logo{ color:#fff; font-family:'Plus Jakarta Sans'; font-size:20px; margin-bottom:16px; display:flex; align-items:center; gap:10px;}
+.footer-bottom{
+  display:flex; justify-content:space-between; align-items:center; padding-top:28px; font-size:12.5px; flex-wrap:wrap; gap:12px;
+}
+
+/* misc */
+.divider-space{ height:1px; }
+::selection{ background:var(--turquesa); color:#fff; }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="container">
+    <nav>
+      <a href="index.html" class="logo">
+        <span class="logo-mark">Ω</span>
+        <span>OminiX</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-i18n="nav1">Inicio</a></li>
+        <li class="has-mega" id="megaServicios">
+          <button type="button" class="mega-trigger" aria-expanded="false">
+            <span data-i18n="nav2">Servicios</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="mega-panel">
+            <div class="mega-col">
+              <div class="mega-col-title" data-i18n="megaBaseTitle">Servicios Base</div>
+              <a href="servicio-branding.html" class="mega-item"><span data-i18n="b1t">Branding</span></a>
+              <a href="servicio-audiovisual.html" class="mega-item"><span data-i18n="b2t">Audiovisual</span></a>
+              <a href="servicio-paid-media.html" class="mega-item"><span data-i18n="b3t">Paid Media</span></a>
+              <a href="servicio-redes-sociales.html" class="mega-item"><span data-i18n="b4t">Redes Sociales</span></a>
+              <a href="servicio-email-marketing.html" class="mega-item"><span data-i18n="b5t">Email Marketing</span></a>
+              <a href="servicio-seo-geo.html" class="mega-item"><span data-i18n="b6t">SEO &amp; GEO</span></a>
+              <a href="servicio-sem.html" class="mega-item"><span data-i18n="b7t">SEM</span></a>
+              <a href="servicio-diseno-web.html" class="mega-item"><span data-i18n="b9t">Diseño web básico</span></a>
+            </div>
+            <div class="mega-col mega-col-metax">
+              <div class="mega-col-title" data-i18n="megaMetaTitle">MetaX</div>
+              <a href="metax-linea-1.html" class="mega-item"><span data-i18n="l1t">Contenido futurista</span></a>
+              <a href="metax-linea-2.html" class="mega-item"><span data-i18n="l2t">Identidades virtuales</span></a>
+              <a href="metax-linea-3.html" class="mega-item"><span data-i18n="l3t">Activaciones phygitales</span></a>
+              <a href="metax-linea-4.html" class="mega-item"><span data-i18n="l4t">Experiencias interactivas</span></a>
+              <a href="metax-linea-5.html" class="mega-item"><span data-i18n="l5t">IA aplicada a negocio</span></a>
+            </div>
+          </div>
+        </li>
+        <li><a href="proyectos.html" data-i18n="nav3">Proyectos</a></li>
+        <li><a href="blog.html" data-i18n="nav4">Blog</a></li>
+        <li><a href="contacto.html" data-i18n="nav5">Contáctanos</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="lang-toggle">
+          <button class="active" data-lang="es">ES</button>
+          <button data-lang="en">EN</button>
+        </div>
+        <a href="contacto.html" class="btn btn-primary nav-cta-desktop" data-i18n="navCta">Empieza aquí</a>
+        <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="inicio" style="min-height:auto; padding-top:180px; padding-bottom:60px;">
+  <div class="container">
+    <div class="reveal in" style="max-width:680px;">
+      <div class="eyebrow" data-i18n="svcDwEyebrow">Servicio Base · Diseño web</div>
+      <h1 data-i18n="svcDwTitle" style="font-size:clamp(34px,4.6vw,56px);">La web que te falta, sin complicarte</h1>
+      <p class="lead" data-i18n="svcDwLead" style="max-width:580px;">Landing page o web corporativa de hasta 4 secciones, responsive y lista para publicar en pocos días.</p>
+      <div class="hero-actions" style="margin-bottom:0;">
+        <a href="contacto.html" class="btn btn-primary" data-i18n="svcDwCta1">Solicitar propuesta</a>
+        <a href="index.html#servicios" class="btn btn-ghost" data-i18n="svcDwCta2">Ver todos los Servicios Base</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="servicios">
+  <div class="container">
+    <div class="head-block reveal">
+      <div class="eyebrow" data-i18n="svcDwWhatTitle">Qué incluye</div>
+      <h2 data-i18n="svcDwWhatLead">Una web funcional y a tu medida, sin plantillas genéricas ni procesos eternos.</h2>
+    </div>
+    <div class="base-grid reveal-stagger">
+      <div class="base-card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-6"/></svg></div>
+        <h4 data-i18n="dw1t">Diseño a medida</h4>
+        <p data-i18n="dw1p">Estructura y estilo adaptados a tu marca, no una plantilla reutilizada.</p>
+      </div>
+      <div class="base-card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 9h20M8 20h8"/></svg></div>
+        <h4 data-i18n="dw2t">Hasta 4 secciones</h4>
+        <p data-i18n="dw2p">Inicio, servicios, sobre nosotros y contacto — lo esencial, bien resuelto.</p>
+      </div>
+      <div class="base-card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="14" height="14" rx="2"/><rect x="17" y="8" width="5" height="12" rx="1"/></svg></div>
+        <h4 data-i18n="dw3t">100% responsive</h4>
+        <p data-i18n="dw3p">Se ve y funciona igual de bien en móvil, tablet y escritorio.</p>
+      </div>
+      <div class="base-card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h4 data-i18n="dw4t">Lista para publicar</h4>
+        <p data-i18n="dw4p">Entrega con dominio conectado y formulario de contacto funcionando.</p>
+      </div>
+      <div class="base-card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6M11 8v6"/></svg></div>
+        <h4 data-i18n="dw5t">SEO técnico básico</h4>
+        <p data-i18n="dw5p">Meta tags, velocidad de carga y estructura pensada para indexar bien desde el primer día.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad mist-bg">
+  <div class="container">
+    <div class="head-block center reveal">
+      <div class="eyebrow" data-i18n="svcDwForTitle">Para quién es</div>
+      <h2 data-i18n="svcDwForLead" style="font-weight:400; font-size:clamp(22px,2.6vw,30px);">Negocios que necesitan una presencia web profesional rápida, sin un proyecto de web a gran escala.</h2>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="contacto">
+  <div class="container">
+    <div class="contact-wrap reveal">
+      <div class="contact-info">
+        <div class="eyebrow" data-i18n="contactEyebrow">Contáctanos</div>
+        <h2 data-i18n="contactTitle">Hablemos de tu marca</h2>
+        <p data-i18n="contactLead">Cuéntanos qué necesitas y te respondemos con una propuesta concreta, sin compromiso.</p>
+
+        <div class="contact-channel">
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="var(--turquesa)" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 6 10-6"/></svg></div>
+          <span>hola@ominix.agency</span>
+        </div>
+        <div class="contact-channel">
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="var(--turquesa)" stroke-width="1.6"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <span data-i18n="contactLoc">Valencia, España</span>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg></a>
+          <a href="#" class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7M7 7v.01M11 17v-4.5c0-1.4 1-2.5 2.5-2.5s2.5 1.1 2.5 2.5V17M11 10v7"/></svg></a>
+        </div>
+      </div>
+
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="field">
+            <label for="fname" data-i18n="fname">Nombre</label>
+            <input type="text" id="fname" name="fname" required>
+          </div>
+          <div class="field">
+            <label for="femail" data-i18n="femail">Email</label>
+            <input type="email" id="femail" name="femail" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="fcompany" data-i18n="fcompany">Empresa</label>
+            <input type="text" id="fcompany" name="fcompany">
+          </div>
+          <div class="field">
+            <label for="fservice" data-i18n="fservice">Servicio de interés</label>
+            <select id="fservice" name="fservice">
+              <option data-i18n="fs0">Fase 0 · Diagnóstico MetaX</option>
+              <option data-i18n="fs1">Branding</option>
+              <option data-i18n="fs2">Redes sociales</option>
+              <option data-i18n="fs3">Paid media</option>
+              <option data-i18n="fs4">SEO / SEM / GEO</option>
+              <option data-i18n="fs5">MetaX · Contenido futurista</option>
+              <option data-i18n="fs6">MetaX · Identidades virtuales</option>
+              <option data-i18n="fs7">MetaX · Activaciones phygitales</option>
+              <option data-i18n="fs8">MetaX · Experiencias interactivas</option>
+              <option data-i18n="fs9">MetaX · IA aplicada a negocio</option>
+              <option data-i18n="fs10">Aún no lo sé</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fmsg" data-i18n="fmsg">Mensaje</label>
+          <textarea id="fmsg" name="fmsg" placeholder=""></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start;" data-i18n="fsubmit">Enviar mensaje</button>
+        <p class="form-note" id="formNote" data-i18n="fnote">Te respondemos en un plazo máximo de 48 horas laborables.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><span class="logo-mark">Ω</span> OminiX</div>
+        <p style="font-size:14px; max-width:280px; font-weight:300;" data-i18n="footTag">Marketing con dirección estratégica. Servicios Base y MetaX para marcas que quieren conectar con lo que viene.</p>
+      </div>
+      <div>
+        <h5 data-i18n="footH1">Servicios</h5>
+        <ul>
+          <li><a href="index.html#servicios" data-i18n="footL1">Branding</a></li>
+          <li><a href="index.html#servicios" data-i18n="footL2">Redes sociales</a></li>
+          <li><a href="index.html#servicios" data-i18n="footL3">Paid media</a></li>
+          <li><a href="index.html#servicios" data-i18n="footL4">SEO &amp; SEM</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 data-i18n="footH2">MetaX</h5>
+        <ul>
+          <li><a href="index.html#servicios" data-i18n="footL5">Contenido futurista</a></li>
+          <li><a href="index.html#servicios" data-i18n="footL6">Identidades virtuales</a></li>
+          <li><a href="index.html#servicios" data-i18n="footL7">Activaciones phygitales</a></li>
+          <li><a href="index.html#servicios" data-i18n="footL8">IA aplicada a negocio</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 data-i18n="footH3">OminiX</h5>
+        <ul>
+          <li><a href="proyectos.html" data-i18n="footL9">Proyectos</a></li>
+          <li><a href="blog.html" data-i18n="footL10">Blog</a></li>
+          <li><a href="contacto.html" data-i18n="footL11">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footCopy">© 2026 OminiX. Todos los derechos reservados.</span>
+      <span data-i18n="footMade">Diseñado con dirección estratégica en Valencia.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   NAV: sticky state + mobile menu
+============================================================ */
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open'); navLinks.classList.remove('open');
+}));
+
+/* ============================================================
+   MEGA MENU: Servicios
+   Escritorio: se abre con :hover (CSS). Aquí solo cubrimos
+   el tap en móvil, donde no existe hover, y el cierre al
+   pulsar un enlace o fuera del panel.
+============================================================ */
+const megaServicios = document.getElementById('megaServicios');
+const megaTrigger = megaServicios.querySelector('.mega-trigger');
+let megaCloseTimer = null;
+
+function openMega(){
+  clearTimeout(megaCloseTimer);
+  megaServicios.classList.add('mega-open');
+  megaTrigger.setAttribute('aria-expanded', 'true');
+}
+function closeMegaSoon(){
+  clearTimeout(megaCloseTimer);
+  megaCloseTimer = setTimeout(() => {
+    megaServicios.classList.remove('mega-open');
+    megaTrigger.setAttribute('aria-expanded', 'false');
+  }, 260);
+}
+
+// Escritorio: abre al entrar, cierra con un pequeño margen al salir
+// (así el trayecto en diagonal del botón al panel no lo cierra).
+megaServicios.addEventListener('mouseenter', () => {
+  if (window.innerWidth > 960) openMega();
+});
+megaServicios.addEventListener('mouseleave', () => {
+  if (window.innerWidth > 960) closeMegaSoon();
+});
+
+// Móvil: tap para abrir/cerrar como acordeón.
+megaTrigger.addEventListener('click', (e) => {
+  if (window.innerWidth <= 960) {
+    e.preventDefault();
+    const isOpen = megaServicios.classList.toggle('mega-open');
+    megaTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+});
+megaServicios.querySelectorAll('.mega-item').forEach(a => a.addEventListener('click', () => {
+  clearTimeout(megaCloseTimer);
+  megaServicios.classList.remove('mega-open');
+  megaTrigger.setAttribute('aria-expanded', 'false');
+  burger.classList.remove('open'); navLinks.classList.remove('open');
+}));
+document.addEventListener('click', (e) => {
+  if (window.innerWidth <= 960 && !megaServicios.contains(e.target)) {
+    megaServicios.classList.remove('mega-open');
+    megaTrigger.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* ============================================================
+   SCROLL REVEAL
+============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('in');
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+
+/* ============================================================
+   FORM (visual only — sin backend conectado)
+============================================================ */
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const note = document.getElementById('formNote');
+  const original = note.textContent;
+  note.textContent = currentLang === 'en'
+    ? 'Thanks — this form is a visual demo, connect it to your email or CRM to go live.'
+    : 'Gracias — este formulario es una demo visual, conéctalo a tu email o CRM para activarlo.';
+  note.style.color = 'var(--turquesa)';
+  setTimeout(() => { note.textContent = original; note.style.color = ''; }, 4000);
+  this.reset();
+});
+
+/* ============================================================
+   IDIOMA — ES / EN
+============================================================ */
+const i18n = {
+  es: {
+    nav1:"Inicio", nav2:"Servicios", nav3:"Proyectos", nav4:"Blog", nav5:"Contáctanos", navCta:"Empieza aquí",
+    megaBaseTitle:"Servicios Base", megaMetaTitle:"MetaX",
+    heroEyebrow:"Metamarketing · Estrategia + IA",
+    heroTitle:'Marcas que se <span class="accent">recuerdan</span>, no solo que se ven.',
+    heroLead:"Combinamos marketing tradicional con IA, realidad aumentada y NFC para que tu empresa conecte con clientes que ya no responden a la publicidad de siempre.",
+    heroCta1:"Habla con nosotros", heroCta2:"Ver servicios",
+    baseEyebrow:"Servicios Base", baseTitle:"La base de toda marca sólida",
+    baseLead:"Identidad, contenido y visibilidad: los pilares que sostienen cualquier estrategia, ejecutados con criterio y sin relleno.",
+    heroBaseCta1:"Solicitar propuesta", heroBaseCta2:"Ver MetaX →",
+    processEyebrow:"Cómo trabajamos", processTitle:"Un proceso claro, sin sorpresas",
+    processLead:"Desde el primer contacto hasta el primer resultado, sabes exactamente en qué fase estás.",
+    pr1t:"Diagnóstico rápido", pr1p:"Una llamada de 20 minutos para entender tu marca, tu mercado y tu punto de partida.",
+    pr2t:"Propuesta a medida", pr2p:"Te enviamos qué servicios necesitas y por qué, con alcance y precio cerrados.",
+    pr3t:"Ejecución", pr3p:"Trabajamos por sprints con entregas visibles, sin cajas negras ni sorpresas de última hora.",
+    pr4t:"Reporte y ajuste", pr4p:"Medimos resultados reales y ajustamos la estrategia con datos, no con intuición.",
+    svcDwEyebrow:"Servicio Base · Diseño web", svcDwTitle:"La web que te falta, sin complicarte",
+    svcDwLead:"Landing page o web corporativa de hasta 4 secciones, responsive y lista para publicar en pocos días.",
+    svcDwCta1:"Solicitar propuesta", svcDwCta2:"Ver todos los Servicios Base",
+    svcDwWhatTitle:"Qué incluye", svcDwWhatLead:"Una web funcional y a tu medida, sin plantillas genéricas ni procesos eternos.",
+    dw1t:"Diseño a medida", dw1p:"Estructura y estilo adaptados a tu marca, no una plantilla reutilizada.",
+    dw2t:"Hasta 4 secciones", dw2p:"Inicio, servicios, sobre nosotros y contacto — lo esencial, bien resuelto.",
+    dw3t:"100% responsive", dw3p:"Se ve y funciona igual de bien en móvil, tablet y escritorio.",
+    dw4t:"Lista para publicar", dw4p:"Entrega con dominio conectado y formulario de contacto funcionando.",
+    dw5t:"SEO técnico básico", dw5p:"Meta tags, velocidad de carga y estructura pensada para indexar bien desde el primer día.",
+    svcDwForTitle:"Para quién es", svcDwForLead:"Negocios que necesitan una presencia web profesional rápida, sin un proyecto de web a gran escala.",
+    svcL1Eyebrow:"MetaX · Línea 1", svcL1Title:"Contenido futurista", 
+    svcL1Lead:"Vídeo e imagen generados con IA y 3D, siempre bajo dirección creativa humana. Nada de estética automática sin editar.",
+    svcL1Cta2:"Ver todas las líneas MetaX",
+    svcL1WhatTitle:"Qué incluye", svcL1WhatLead:"Producción con IA dirigida por criterio humano, no contenido genérico generado sin control.",
+    l1d1t:"Vídeo de producto con IA", l1d1p:"Renders y animaciones que parecen rodados en estudio, sin necesidad de plató físico.",
+    l1d2t:"Imagen de campaña", l1d2p:"Piezas visuales generadas y retocadas para redes, ads y ecommerce.",
+    l1d3t:"Contenido 3D", l1d3p:"Modelado y render de producto para catálogo, configuradores o campañas.",
+    l1d4t:"Dirección creativa", l1d4p:"Cada pieza pasa por revisión humana antes de salir: nada se publica sin editar.",
+    svcL1ForTitle:"Para quién es", svcL1ForLead:"Marcas que necesitan contenido de alto nivel visual sin el coste ni los tiempos de una producción tradicional.",
+    b1t:"Branding", b1p:"Identidad visual completa: logotipo, paleta, tipografía y manual de uso.",
+    b2t:"Audiovisual", b2p:"Vídeo y fotografía de producto, marca y campaña, listos para cada canal.",
+    b3t:"Paid Media", b3p:"Campañas en Meta y Google Ads con optimización semanal y foco en ROAS.",
+    b4t:"Redes Sociales", b4p:"Calendario, diseño y gestión mensual con estrategia de contenido real.",
+    b5t:"Email Marketing", b5p:"Newsletters, automatizaciones y campañas con seguimiento de resultados.",
+    b6t:"SEO & GEO", b6p:"Posicionamiento en buscadores tradicionales y en motores de búsqueda con IA.",
+    b7t:"SEM", b7p:"Publicidad en buscadores para captar demanda activa en el momento justo.",
+    b9t:"Diseño web básico", b9p:"Landing page o web corporativa de hasta 4 secciones, responsive y lista para publicar.",
+    b8t:"¿No sabes por dónde empezar?", b8p:"Te ayudamos a definir qué servicios necesita tu marca ahora mismo.",
+    metaEyebrow:"MetaX · Innovación", metaTitle:"Marketing pensado para las próximas generaciones",
+    metaLead:"MetaX no parte de la tecnología: parte de tu negocio. Analizamos tu público, tu presupuesto y tu punto de partida antes de recomendar cualquier solución.",
+    fase0t:"Fase 0 — Diagnóstico estratégico",
+    fase0p:"Paso obligatorio antes de cualquier proyecto MetaX. Analizamos tu negocio y te recomendamos, con justificación clara, la línea o combinación de líneas adecuada — nunca al revés.",
+    l1i:"Línea 1", l1t:"Contenido futurista", l1p:"Vídeo e imagen generados con IA y 3D, siempre bajo dirección creativa humana. Nada de estética automática sin editar.", l1tag:"IA · 3D · Vídeo",
+    l2i:"Línea 2", l2t:"Identidades virtuales", l2p:"Asistentes, portavoces y mascotas de marca virtuales — cada figura con una función y un objetivo distintos.", l2tag:"Avatares · IA",
+    l3i:"Línea 3", l3t:"Activaciones phygitales", l3p:"QR y NFC que conectan un objeto o espacio físico con una experiencia digital: catálogos, descuentos, trazabilidad.", l3tag:"QR · NFC",
+    l4i:"Línea 4", l4t:"Experiencias interactivas", l4p:"Tours virtuales 360º con puntos interactivos y configuradores de producto en 3D para tienda o showroom.", l4tag:"360º · 3D",
+    l5i:"Línea 5", l5t:"IA aplicada a negocio", l5p:"Chatbots, personalización de contenido y analítica predictiva: la única línea pensada para generar ingreso recurrente.", l5tag:"Chatbots · Datos",
+    metaCtaT:"¿Cuál encaja con tu marca?", metaCtaP:"Empezamos siempre por el diagnóstico. Sin compromiso.", metaCtaBtn:"Solicitar diagnóstico",
+    heroMetaCta2:"Ver Servicios Base →",
+    projEyebrow:"Proyectos", projTitle:"Casos en desarrollo",
+    projLead:"Estamos construyendo nuestro portfolio junto a las primeras marcas que confían en nosotros. Aquí irán apareciendo.",
+    p1tag:"Branding", p1t:"Identidad de marca — próximamente", p1p:"Espacio reservado para el primer caso completo de branding.",
+    p2tag:"MetaX · Línea 3", p2t:"Activación phygital — próximamente", p2p:"Espacio reservado para el primer caso de QR/NFC en producto real.",
+    p3tag:"MetaX · Línea 4", p3t:"Tour 360º — próximamente", p3p:"Espacio reservado para el primer recorrido virtual de un showroom.",
+    blogEyebrow:"Blog", blogTitle:"Ideas sobre marketing y metamarketing", blogLead:"Notas cortas y prácticas sobre lo que funciona ahora mismo, sin relleno.",
+    a1meta:"MetaX · 5 min", a1t:"Qué es la Fase 0 y por qué no nos saltamos nunca este paso", a1p:"El diagnóstico previo que evita vender tecnología que tu negocio no necesita.", a1cta:"Leer artículo",
+    a2meta:"Branding · 4 min", a2t:"QR y NFC: la diferencia técnica que sí importa", a2p:"Cuándo usar cada tecnología según el producto y el presupuesto disponible.", a2cta:"Leer artículo",
+    a3meta:"SEO · 6 min", a3t:"GEO: preparar tu marca para las búsquedas con IA", a3p:"Qué cambia cuando quien busca tu negocio es un modelo de lenguaje.", a3cta:"Leer artículo",
+    contactEyebrow:"Contáctanos", contactTitle:"Hablemos de tu marca", contactLead:"Cuéntanos qué necesitas y te respondemos con una propuesta concreta, sin compromiso.",
+    contactLoc:"Valencia, España",
+    fname:"Nombre", femail:"Email", fcompany:"Empresa", fservice:"Servicio de interés", fmsg:"Mensaje", fsubmit:"Enviar mensaje",
+    fnote:"Te respondemos en un plazo máximo de 48 horas laborables.",
+    fs0:"Fase 0 · Diagnóstico MetaX", fs1:"Branding", fs2:"Redes sociales", fs3:"Paid media", fs4:"SEO / SEM / GEO",
+    fs5:"MetaX · Contenido futurista", fs6:"MetaX · Identidades virtuales", fs7:"MetaX · Activaciones phygitales",
+    fs8:"MetaX · Experiencias interactivas", fs9:"MetaX · IA aplicada a negocio", fs10:"Aún no lo sé",
+    footTag:"Marketing con dirección estratégica. Servicios Base y MetaX para marcas que quieren conectar con lo que viene.",
+    footH1:"Servicios", footL1:"Branding", footL2:"Redes sociales", footL3:"Paid media", footL4:"SEO & SEM",
+    footH2:"MetaX", footL5:"Contenido futurista", footL6:"Identidades virtuales", footL7:"Activaciones phygitales", footL8:"IA aplicada a negocio",
+    footH3:"OminiX", footL9:"Proyectos", footL10:"Blog", footL11:"Contacto",
+    footCopy:"© 2026 OminiX. Todos los derechos reservados.", footMade:"Diseñado con dirección estratégica en Valencia."
+  },
+  en: {
+    nav1:"Home", nav2:"Services", nav3:"Projects", nav4:"Blog", nav5:"Contact us", navCta:"Get started",
+    megaBaseTitle:"Base Services", megaMetaTitle:"MetaX",
+    heroEyebrow:"Metamarketing · Strategy + AI",
+    heroTitle:'Brands people <span class="accent">remember</span>, not just brands people see.',
+    heroLead:"We combine traditional marketing with AI, augmented reality and NFC so your company connects with customers who no longer respond to standard advertising.",
+    heroCta1:"Talk to us", heroCta2:"See services",
+    baseEyebrow:"Base Services", baseTitle:"The foundation of every solid brand",
+    baseLead:"Identity, content and visibility: the pillars behind any strategy, executed with judgement and no filler.",
+    heroBaseCta1:"Request a proposal", heroBaseCta2:"See MetaX →",
+    processEyebrow:"How we work", processTitle:"A clear process, no surprises",
+    processLead:"From first contact to first result, you always know exactly what stage you're in.",
+    pr1t:"Fast diagnosis", pr1p:"A 20-minute call to understand your brand, your market and your starting point.",
+    pr2t:"Tailored proposal", pr2p:"We send you which services you need and why, with fixed scope and price.",
+    pr3t:"Execution", pr3p:"We work in sprints with visible deliverables — no black boxes, no last-minute surprises.",
+    pr4t:"Report & adjust", pr4p:"We measure real results and adjust strategy with data, not guesswork.",
+    svcDwEyebrow:"Base Service · Web Design", svcDwTitle:"The website you're missing, without the hassle",
+    svcDwLead:"A landing page or corporate site with up to 4 sections, responsive and ready to publish in a few days.",
+    svcDwCta1:"Request a proposal", svcDwCta2:"See all Base Services",
+    svcDwWhatTitle:"What's included", svcDwWhatLead:"A functional site built for you, no generic templates or endless processes.",
+    dw1t:"Custom design", dw1p:"Structure and style adapted to your brand, not a reused template.",
+    dw2t:"Up to 4 sections", dw2p:"Home, services, about and contact — the essentials, done right.",
+    dw3t:"100% responsive", dw3p:"Looks and works just as well on mobile, tablet and desktop.",
+    dw4t:"Ready to publish", dw4p:"Delivered with domain connected and a working contact form.",
+    dw5t:"Basic technical SEO", dw5p:"Meta tags, load speed and structure built to index well from day one.",
+    svcDwForTitle:"Who it's for", svcDwForLead:"Businesses that need a fast, professional web presence without a large-scale web project.",
+    svcL1Eyebrow:"MetaX · Line 1", svcL1Title:"Futuristic content",
+    svcL1Lead:"AI and 3D generated video and image, always under human creative direction. No unedited automatic aesthetics.",
+    svcL1Cta2:"See all MetaX lines",
+    svcL1WhatTitle:"What's included", svcL1WhatLead:"AI production directed by human judgement, not generic content generated without control.",
+    l1d1t:"AI product video", l1d1p:"Renders and animations that look studio-shot, with no need for a physical set.",
+    l1d2t:"Campaign imagery", l1d2p:"Visual pieces generated and retouched for social, ads and ecommerce.",
+    l1d3t:"3D content", l1d3p:"Product modelling and rendering for catalogues, configurators or campaigns.",
+    l1d4t:"Creative direction", l1d4p:"Every piece goes through human review before release: nothing ships unedited.",
+    svcL1ForTitle:"Who it's for", svcL1ForLead:"Brands that need high visual quality content without the cost or timelines of a traditional production.",
+    b1t:"Branding", b1p:"Full visual identity: logo, palette, typography and usage manual.",
+    b2t:"Audiovisual", b2p:"Product, brand and campaign video and photography, ready for every channel.",
+    b3t:"Paid Media", b3p:"Meta and Google Ads campaigns with weekly optimisation and a focus on ROAS.",
+    b4t:"Social Media", b4p:"Calendar, design and monthly management with a real content strategy.",
+    b5t:"Email Marketing", b5p:"Newsletters, automations and campaigns with results tracking.",
+    b6t:"SEO & GEO", b6p:"Ranking on traditional search engines and on AI-powered search.",
+    b7t:"SEM", b7p:"Search advertising to capture active demand at the right moment.",
+    b9t:"Basic web design", b9p:"Landing page or corporate site up to 4 sections, responsive and ready to publish.",
+    b8t:"Not sure where to start?", b8p:"We help you define which services your brand needs right now.",
+    metaEyebrow:"MetaX · Innovation", metaTitle:"Marketing built for the next generations",
+    metaLead:"MetaX doesn't start from technology: it starts from your business. We look at your audience, your budget and your starting point before recommending any solution.",
+    fase0t:"Phase 0 — Strategic diagnosis",
+    fase0p:"A mandatory step before any MetaX project. We analyse your business and recommend, with clear reasoning, the right line or combination of lines — never the other way round.",
+    l1i:"Line 1", l1t:"Futuristic content", l1p:"AI and 3D generated video and image, always under human creative direction. No unedited automatic aesthetics.", l1tag:"AI · 3D · Video",
+    l2i:"Line 2", l2t:"Virtual identities", l2p:"Assistants, spokespeople and brand mascots — each figure with a distinct function and goal.", l2tag:"Avatars · AI",
+    l3i:"Line 3", l3t:"Phygital activations", l3p:"QR and NFC that connect a physical object or space to a digital experience: catalogues, discounts, traceability.", l3tag:"QR · NFC",
+    l4i:"Line 4", l4t:"Interactive experiences", l4p:"360º virtual tours with interactive hotspots and 3D product configurators for stores and showrooms.", l4tag:"360º · 3D",
+    l5i:"Line 5", l5t:"AI applied to business", l5p:"Chatbots, content personalisation and predictive analytics: the only line built for recurring revenue.", l5tag:"Chatbots · Data",
+    metaCtaT:"Which one fits your brand?", metaCtaP:"We always start with the diagnosis. No commitment.", metaCtaBtn:"Request diagnosis",
+    heroMetaCta2:"See Base Services →",
+    projEyebrow:"Projects", projTitle:"Cases in progress",
+    projLead:"We're building our portfolio alongside the first brands trusting us. Cases will appear here as they close.",
+    p1tag:"Branding", p1t:"Brand identity — coming soon", p1p:"Reserved space for our first complete branding case.",
+    p2tag:"MetaX · Line 3", p2t:"Phygital activation — coming soon", p2p:"Reserved space for our first QR/NFC case on a real product.",
+    p3tag:"MetaX · Line 4", p3t:"360º tour — coming soon", p3p:"Reserved space for our first virtual showroom tour.",
+    blogEyebrow:"Blog", blogTitle:"Ideas on marketing and metamarketing", blogLead:"Short, practical notes on what's working right now — no filler.",
+    a1meta:"MetaX · 5 min", a1t:"What Phase 0 is and why we never skip it", a1p:"The upfront diagnosis that avoids selling technology your business doesn't need.", a1cta:"Read article",
+    a2meta:"Branding · 4 min", a2t:"QR vs NFC: the technical difference that actually matters", a2p:"When to use each technology depending on product and available budget.", a2cta:"Read article",
+    a3meta:"SEO · 6 min", a3t:"GEO: getting your brand ready for AI search", a3p:"What changes when the one searching for your business is a language model.", a3cta:"Read article",
+    contactEyebrow:"Contact us", contactTitle:"Let's talk about your brand", contactLead:"Tell us what you need and we'll get back with a concrete proposal, no strings attached.",
+    contactLoc:"Valencia, Spain",
+    fname:"Name", femail:"Email", fcompany:"Company", fservice:"Service of interest", fmsg:"Message", fsubmit:"Send message",
+    fnote:"We reply within 48 working hours.",
+    fs0:"Phase 0 · MetaX diagnosis", fs1:"Branding", fs2:"Social media", fs3:"Paid media", fs4:"SEO / SEM / GEO",
+    fs5:"MetaX · Futuristic content", fs6:"MetaX · Virtual identities", fs7:"MetaX · Phygital activations",
+    fs8:"MetaX · Interactive experiences", fs9:"MetaX · AI applied to business", fs10:"Not sure yet",
+    footTag:"Marketing with strategic direction. Base and MetaX services for brands ready for what's next.",
+    footH1:"Services", footL1:"Branding", footL2:"Social media", footL3:"Paid media", footL4:"SEO & SEM",
+    footH2:"MetaX", footL5:"Futuristic content", footL6:"Virtual identities", footL7:"Phygital activations", footL8:"AI applied to business",
+    footH3:"OminiX", footL9:"Projects", footL10:"Blog", footL11:"Contact",
+    footCopy:"© 2026 OminiX. All rights reserved.", footMade:"Designed with strategic direction in Valencia."
+  }
+};
+
+let currentLang = 'es';
+function applyLang(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(i18n[lang][key] !== undefined){
+      el.innerHTML = i18n[lang][key];
+    }
+  });
+  document.querySelectorAll('.lang-toggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  if (typeof renderHeroOrb === 'function') renderHeroOrb(heroOrbIndex);
+}
+document.querySelectorAll('.lang-toggle button').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+</script>
+</body>
+</html>
